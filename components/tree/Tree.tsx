@@ -33,7 +33,7 @@ export interface AntTreeNodeProps {
   checked?: boolean;
   expanded?: boolean;
   selected?: boolean;
-  icon?: (nodeProps: AntdTreeNodeAttribute) => React.ReactNode | React.ReactNode;
+  icon?: ((treeNode: AntdTreeNodeAttribute) => React.ReactNode) | React.ReactNode;
   children?: React.ReactNode;
 }
 
@@ -106,6 +106,8 @@ export interface TreeProps {
   filterAntTreeNode?: (node: AntTreeNode) => boolean;
   /** 异步加载数据 */
   loadData?: (node: AntTreeNode) => PromiseLike<any>;
+  loadedKeys?: string[];
+  onLoaded?: (loadedKeys: string[], info: { event: 'load', node: AntTreeNode; }) => void;
   /** 响应右键点击 */
   onRightClick?: (options: AntTreeNodeMouseEvent) => void;
   /** 设置节点可拖拽（IE>8）*/
@@ -129,7 +131,7 @@ export interface TreeProps {
 }
 
 export default class Tree extends React.Component<TreeProps, any> {
-  static TreeNode = TreeNode;
+  static TreeNode: React.ComponentType<AntTreeNodeProps> = TreeNode;
   static DirectoryTree = DirectoryTree;
 
   static defaultProps = {
